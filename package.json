@@ -1,0 +1,24 @@
+{
+  "name": "firework",
+  "version": "1.0.0",
+  "description": "canvas烟花",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/nglkz/firework.git"
+  },
+  "author": "nglkz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nglkz/firework/issues"
+  },
+  "homepage": "https://github.com/nglkz/firework#readme"
+}
