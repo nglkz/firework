@@ -7,7 +7,7 @@ var fwList = [];
 ctx.fillRect(0,0,c.width,c.height);
 
 function FireWork(posX,posY,boomPoint,color,size){
-	this.size=size;
+	this.size=200;
 	this.posX = posX;
 	this.g = 1;//重力基数
 	this.cir = 0;//重力系数
@@ -20,18 +20,19 @@ function FireWork(posX,posY,boomPoint,color,size){
 	this.lr = 0;
 	this.disCount = 0;
 	this.isDone = 0;
+	this.speed = Math.random()*.1+2;
 
 	this.big={
-		rotate:new Array(size),
-		speed:new Array(size),
-		dist:new Array(size).fill(1),
-		alpha:new Array(size).fill(1),
-		light:new Array(size).fill(0.3),//泛光 透明度
-		darkness:new Array(size),
-		one:new Array(size).fill(0.5),//线性 闪烁线性参
-		flower:new Array(size)
+		rotate:new Array(this.size),
+		speed:new Array(this.size),
+		dist:new Array(this.size).fill(1),
+		alpha:new Array(this.size).fill(1),
+		light:new Array(this.size).fill(0.3),//泛光 透明度
+		darkness:new Array(this.size),
+		one:new Array(this.size).fill(0.5),//线性 闪烁线性参
+		flower:new Array(this.size)
 	};
-	for(let x=0;x<size;x++){
+	for(let x=0;x<this.size;x++){
 		this.big.rotate[x]=(Math.random()*100>>0)/100;
 		this.big.speed[x]=Math.random()*5;
 		this.big.flower[x]=Math.random()<0.5?(5-this.big.speed[x])/4:0.1;
@@ -66,10 +67,21 @@ FireWork.prototype.fire = function(){
 	ctx.translate(this.posX,c.height);
 
 	var ballcolor=ctx.createRadialGradient(x,-this.height,0,x,-this.height,3);
-	ballcolor.addColorStop(0,"white");
+	ballcolor.addColorStop(0,"gold");
+	ballcolor.addColorStop(.3,"gold");
+	ballcolor.addColorStop(.3,"white");
 	// ballcolor.addColorStop(0.1,"gold")
 	ballcolor.addColorStop(1,"rgba(255,255,255,0)");
 	ctx.fillStyle=ballcolor;
+
+	if(this.height>this.boomPoint-20){
+		this.height -= 1.85;
+		var ballcolor1=ctx.createRadialGradient(x,-this.height,0,x,-this.height,3);
+		// ballcolor1.addColorStop(0,"red");
+		ballcolor1.addColorStop(0,"yellow");
+		ballcolor1.addColorStop(0.5,"rgba(255,255,255,0)");
+		ctx.fillStyle = ballcolor1;
+	}
 	// ctx.fillStyle= 'rgba(255,255,150,'+this.ballAlpha+')';
 	// ctx.strokeStyle = 'rgba(255,255,150,'+this.ballAlpha+')';
 	ctx.beginPath();
@@ -78,7 +90,7 @@ FireWork.prototype.fire = function(){
 	ctx.closePath();
 	ctx.fill();
 	ctx.restore();
-	this.height+=2;
+	this.height+=this.speed;
 }
 
 FireWork.prototype.boom = function(){
@@ -159,12 +171,11 @@ FireWork.prototype.flash = function(){
 var fw1 = new FireWork(c.width*Math.random(),0,380,randomColor(),300);
 var fw2 = new FireWork(c.width*Math.random(),0,450,randomColor(),300);
 var fw3 = new FireWork(c.width*Math.random(),0,500,randomColor(),300);
-var fw4 = new FireWork(400,0,510,"#e7c6c1",500);
-var fw5 = new FireWork(500,0,500,"#d3beca",300);
-var fw6 = new FireWork(600,0,450,"#d3beca",300);
-var fw7 = new FireWork(700,0,380,"#d3beca",300);
+// var fw4 = new FireWork(400,0,510,"#e7c6c1",500);
+// var fw5 = new FireWork(500,0,500,"#d3beca",300);
+// var fw6 = new FireWork(600,0,450,"#d3beca",300);
+// var fw7 = new FireWork(700,0,380,"#d3beca",300);
 fwList.push(fw1,fw2,fw3);
-// fwList.push(fw4);
 
 mainLoop();
 
@@ -187,9 +198,9 @@ function mainLoop(){
 		if(fwList[x].isDone){
 			fwList.splice(x,1);
 		}
-		if(fwList.length<3){
+		if(fwList.length<5){
 			let x_center = c.width*Math.random();
-			fwList.push(new FireWork(x_center,0,Math.random()*200+350,randomColor(),350))
+			fwList.push(new FireWork(x_center,0,Math.random()*200+350,randomColor(),200))
 		}
 	}
 	// ctx.save();
